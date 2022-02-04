@@ -1,33 +1,27 @@
 package com.dineshsaravanan.utils;
-
-import org.jline.reader.LineReader;
-import org.jline.reader.LineReaderBuilder;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class ConsoleUtility {
-  private static LineReader lineReader;
-
-  private static LineReader getLineReader() {
-    if (lineReader == null) {
-      lineReader = LineReaderBuilder
-          .builder()
-          .build();
+  public static String readLine(BufferedReader reader, String prompt) {
+    System.out.println(prompt);
+    String s = "";
+    try {
+      s = reader.readLine();
+    } catch (IOException e) {
+      System.out.println(e);
     }
 
-    return lineReader;
+    return s;
   }
 
-  public static int getIntegerFromConsole(String prompt) {
-    lineReader = getLineReader();
-
-    String line = lineReader.readLine(prompt);
-    while(!Utility.isInteger(line)) {
-      line = lineReader.readLine(prompt);
-    }
+  public static int getIntegerFromConsole(BufferedReader reader, String prompt) {
+    String line = readLine(reader, prompt);
 
     return Integer.parseInt(line);
   }
 
-  public static String getStringFromConsole(String prompt) {
-    return getLineReader().readLine(prompt);
+  public static String getStringFromConsole(BufferedReader reader, String prompt) {
+    return readLine(reader, prompt);
   }
 }
