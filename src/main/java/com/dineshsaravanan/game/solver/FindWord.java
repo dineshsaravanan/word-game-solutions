@@ -30,32 +30,30 @@ public class FindWord {
   }
 
   public static void start(Map<Integer, ArrayList<String>> wordByLength) throws IOException {
-    try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-      while(true) {
-        int wordLength = ConsoleUtility.getIntegerFromConsole(reader,"Enter the word length <0 to exit>: ");
+    while(true) {
+      int wordLength = ConsoleUtility.getIntegerFromConsole("Enter the word length <0 to exit>: ");
 
-        if (wordLength == 0) {
-          break;
-        }
-
-        String startsWith = ConsoleUtility.getStringFromConsole(reader,"Starts with: ");
-        String endsWith = ConsoleUtility.getStringFromConsole(reader,"Ends with: ");
-        String contains = ConsoleUtility.getStringFromConsole(reader,"Contains substring: ");
-        String notContain = ConsoleUtility.getStringFromConsole(reader,"Doesn't contain substring: ");
-        String includes = ConsoleUtility.getStringFromConsole(reader,"Contains characters: ");
-        String excludes = ConsoleUtility.getStringFromConsole(reader,"Excludes characters: ");
-
-        var words = FindWord.build(wordByLength).find(wordLength, startsWith, endsWith, contains, notContain, includes, excludes);
-
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < words.size(); i++) {
-          if (i != 0) builder.append(", ");
-
-          builder.append(words.get(i));
-        }
-
-        System.out.println(builder);
+      if (wordLength == 0) {
+        break;
       }
+
+      String startsWith = ConsoleUtility.getStringFromConsole("Starts with: ");
+      String endsWith = ConsoleUtility.getStringFromConsole("Ends with: ");
+      String contains = ConsoleUtility.getStringFromConsole("Contains substring: ");
+      String notContain = ConsoleUtility.getStringFromConsole("Doesn't contain substring: ");
+      String includes = ConsoleUtility.getStringFromConsole("Contains characters: ");
+      String excludes = ConsoleUtility.getStringFromConsole("Excludes characters: ");
+
+      var words = FindWord.build(wordByLength).find(wordLength, startsWith, endsWith, contains, notContain, includes, excludes);
+
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < words.size(); i++) {
+        if (i != 0) builder.append(", ");
+
+        builder.append(words.get(i));
+      }
+
+      System.out.println(builder);
     }
   }
 
