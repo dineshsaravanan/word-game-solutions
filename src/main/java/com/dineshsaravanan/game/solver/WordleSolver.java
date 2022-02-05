@@ -205,7 +205,7 @@ public class WordleSolver {
 
     int i = wordLength-1;
 
-    while((int)possibleString[i] != 0 && i >= 0) {
+    while(i >= 0 && (int)possibleString[i] != 0) {
       endsWith.append(possibleString[i]);
       i--;
     }
