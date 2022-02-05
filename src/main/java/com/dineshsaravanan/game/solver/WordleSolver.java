@@ -12,7 +12,7 @@ public class WordleSolver {
   private final Set<Character> included = new HashSet<>();
   private final Set<Character> excluded = new HashSet<>();
   private final char[] possibleString;
-  private final Map<Character, Set<Integer>> impossibleWordPositions = new HashMap();
+  private final Map<Character, Set<Integer>> impossibleWordPositions = new HashMap<>();
   private ArrayList<String> wordsToSearch;
 
 
@@ -165,12 +165,7 @@ public class WordleSolver {
   }
 
   private void markCharPositionAsImpossible(char c, int position) {
-    var positions = impossibleWordPositions.get(c);
-
-    if (positions == null) {
-      positions = new HashSet<>();
-      impossibleWordPositions.put(c, positions);
-    }
+    var positions = impossibleWordPositions.computeIfAbsent(c, k -> new HashSet<>());
 
     positions.add(position);
   }
