@@ -150,6 +150,7 @@ public class WordleSolver {
       var charValidity = validity.charAt(i);
       var enumValidity = WordleValidity.getWordleValidity(charValidity);
       if (enumValidity == WordleValidity.NOT_FOUND) {
+        markCharPositionAsImpossible(word.charAt(i), i);
         continue;
       }
 
