@@ -79,9 +79,21 @@ public class Utility {
     return !containsAny(stringToCharacterSet(word), stringToCharacterSet(chars));
   }
 
-  private static boolean containsAny(Collection<?> container, Collection<?> containee) {
+
+  public static String characterSetToString(Set<Character> chars) {
+    var stringBuilder = new StringBuilder();
+
+    for (Character c :
+        chars) {
+      stringBuilder.append(c);
+    }
+
+    return stringBuilder.toString();
+  }
+
+  private static boolean containsAny(Collection<?> container, Collection<?> contains) {
     for (Object content :
-        containee) {
+        contains) {
       if (container.contains(content)) {
         return true;
       }
