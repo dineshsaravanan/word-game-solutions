@@ -12,270 +12,394 @@ class FindWordTest {
 
   @Test
   void findWord_returnEmptyListIfNoWordInThatLength() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var findWord = FindWord.build();
+
+    findWord.words(WordGame.initializeWords("words_alpha.test_sample.txt"), 45);
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(45, "", "", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_returnAllStringsOfMatchingLength() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
     String[] size1 = {"A"};
     String[] size4 = {"TEST", "SWIM"};
 
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
     assertEquals(
         new ArrayList<>(Arrays.asList(size1)),
-        findWord.find(1, "", "", "", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 4)
+        .startsWith("")
+        .endsWith("")
+        .contains("");
     assertEquals(
         new ArrayList<>(Arrays.asList(size4)),
-        findWord.find(4, "", "", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfWordListIsEmpty() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.empty.txt"));
+    var words = WordGame.initializeWords("words_alpha.empty.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 4);
+    findWord.startsWith("BE");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(4, "BE", "", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfNotStartsWith() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 4);
+    findWord.startsWith("A");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(4, "A", "", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfNotEndsWith() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 4);
+    findWord.endsWith("TS");
 
     assertEquals(
-        new ArrayList<String>(), findWord.find(4, "", "TS", "", "", "", ""));
+        new ArrayList<String>(), findWord.find()
+    );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfContainsIsNotSubset() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 4);
+    findWord.contains("TS");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(4, "", "", "SE", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfNotContainsIsSubset() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 3);
+    findWord.notContains("AS");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(3, "", "", "", "AS", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfIncludesIsNotPartOfWord() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 3);
+    findWord.includes("ASP");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(3, "", "", "", "", "ASP", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnEmptySetIfAnyExcludesIsPartOfWord() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
+
+    var findWord = FindWord.build();
+    findWord.words(words, 3);
+    findWord.excludes("APE");
 
     assertEquals(
         new ArrayList<String>(),
-        findWord.find(3, "", "", "", "", "", "APE")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfStartsWith() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.startsWith("A");
     String[] foundWords = {"A"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "A", "", "", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.startsWith("i");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "i", "", "", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 5);
+    findWord.startsWith("EM");
     foundWords = new String[]{"EMPTY"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(5, "EM", "", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfEndsWith() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.endsWith("A");
     String[] foundWords = {"A"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "", "A", "", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.endsWith("s");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "", "s", "", "", "", "")
+        findWord.find()
     );
+
+    findWord = FindWord.build();
+    findWord.words(words, 5)
+        .startsWith("EM")
+        .endsWith("Y");
 
     foundWords = new String[]{"EMPTY"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(5, "EM", "Y", "", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfContainsSubStr() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.contains("A");
     String[] foundWords = {"A"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "", "", "A", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.contains("s");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "", "", "s", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 5);
+    findWord.startsWith("E");
+    findWord.endsWith("Y");
+    findWord.contains("MPT");
     foundWords = new String[]{"EMPTY"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(5, "E", "Y", "MPT", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.contains("TE");
     foundWords = new String[]{"LATEST", "MASTER"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "TE", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.contains("TE");
+    findWord.startsWith("L");
     foundWords = new String[]{"LATEST"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "L", "", "TE", "", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.contains("TE");
+    findWord.endsWith("R");
     foundWords = new String[]{"MASTER"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "R", "TE", "", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfNotContainsSubStr() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.notContains("B");
     String[] foundWords = {"A"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "", "", "", "B", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.notContains("T");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "", "", "", "T", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.notContains("M");
+    findWord.contains("TE");
     foundWords = new String[]{"LATEST"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "TE", "M", "", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.notContains("L");
+    findWord.contains("TE");
     foundWords = new String[]{"MASTER"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "TE", "L", "", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfIncludes() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.includes("A");
     String[] foundWords = {"A"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "", "", "", "", "A", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.includes("s");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "", "", "", "", "S", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.includes("L");
     foundWords = new String[]{"LATEST"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "", "", "L", "")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.includes("MTE");
+    findWord.contains("TE");
     foundWords = new String[]{"MASTER"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "TE", "", "MTE", "")
+        findWord.find()
     );
   }
 
   @Test
   void findWord_shouldReturnMatchingWordsIfExcludes() throws IOException {
-    var findWord = FindWord.build(WordGame.initializeWords("words_alpha.test_sample.txt"));
+    var words = WordGame.initializeWords("words_alpha.test_sample.txt");
 
+    var findWord = FindWord.build();
+    findWord.words(words, 1);
+    findWord.excludes("A");
     String[] foundWords = new String[0];
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(1, "", "", "", "", "", "A")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 2);
+    findWord.excludes("B");
+    findWord.includes("I");
     foundWords = new String[]{"IS"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(2, "", "", "", "", "I", "B")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.includes("L");
+    findWord.excludes("MOP");
     foundWords = new String[]{"LATEST"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "", "", "L", "MOP")
+        findWord.find()
     );
 
+    findWord = FindWord.build();
+    findWord.words(words, 6);
+    findWord.contains("TE");
+    findWord.includes("M");
+    findWord.excludes("LOP");
     foundWords = new String[]{"MASTER"};
     assertEquals(
         new ArrayList<>(Arrays.asList(foundWords)),
-        findWord.find(6, "", "", "TE", "", "M", "LOP")
+        findWord.find()
     );
   }
 }

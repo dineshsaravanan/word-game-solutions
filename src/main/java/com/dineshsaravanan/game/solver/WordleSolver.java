@@ -61,7 +61,16 @@ public class WordleSolver {
     var endsWith = wordEndsWith();
     var inc =  Utility.characterSetToString(included);
     var exc = Utility.characterSetToString(excluded);
-    var words = FindWord.find(wordsToSearch, startsWith, endsWith, "", "", inc,  exc);
+
+    var words = FindWord
+        .build()
+        .words(wordsToSearch)
+        .startsWith(startsWith)
+        .endsWith(endsWith)
+        .includes(inc)
+        .excludes(exc)
+        .find();
+
     words = filterForCharPosition(words);
 
     WordGame.printWords(words);

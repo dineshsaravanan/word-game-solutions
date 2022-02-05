@@ -7,53 +7,63 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class FindWord {
-  private static FindWord instance;
+  private String startsWith = "";
+  private String endsWith = "";
+  private String excludes = "";
+  private String includes = "";
+  private String contains = "";
+  private String notContains = "";
+  private ArrayList<String> words = new ArrayList<>();
 
-  private Map<Integer, ArrayList<String>> wordsByLength;
+  public FindWord words(ArrayList<String> words) {
+    this.words = words;
 
-  public static FindWord build(Map<Integer, ArrayList<String>> wordByLength) {
-    if (instance == null) {
-      instance = new FindWord(wordByLength);
-    }
-    else {
-      instance.wordsByLength = wordByLength;
-    }
-
-    return instance;
+    return this;
   }
 
-  private FindWord(Map<Integer, ArrayList<String>> wordsByLength) {
-    this.wordsByLength = wordsByLength;
+  public FindWord words(Map<Integer, ArrayList<String>> wordsByLength, int length) {
+    this.words = wordsByLength.getOrDefault(length, new ArrayList<>());
+
+    return this;
   }
 
-  public static void start(Map<Integer, ArrayList<String>> wordByLength) {
-    while(true) {
-      int wordLength = ConsoleUtility.getIntegerFromConsole("Enter the word length <0 to exit>: ");
+  public FindWord startsWith(String startsWith) {
+    this.startsWith = startsWith;
 
-      if (wordLength == 0) {
-        break;
-      }
-
-      String startsWith = ConsoleUtility.getStringFromConsole("Starts with: ");
-      String endsWith = ConsoleUtility.getStringFromConsole("Ends with: ");
-      String contains = ConsoleUtility.getStringFromConsole("Contains substring: ");
-      String notContain = ConsoleUtility.getStringFromConsole("Doesn't contain substring: ");
-      String includes = ConsoleUtility.getStringFromConsole("Contains characters: ");
-      String excludes = ConsoleUtility.getStringFromConsole("Excludes characters: ");
-
-      var words = FindWord.build(wordByLength).find(wordLength, startsWith, endsWith, contains, notContain, includes, excludes);
-
-      WordGame.printWords(words);
-    }
+    return this;
   }
 
-  protected ArrayList<String> find(int length, String startsWith, String endsWith, String contains, String notContains, String includes, String excludes)
-  {
-    var words = wordsByLength.getOrDefault(length, new ArrayList<>());
-    return FindWord.find(words, startsWith, endsWith, contains, notContains, includes, excludes);
+  public FindWord endsWith(String endsWith) {
+    this.endsWith = endsWith;
+
+    return this;
   }
 
-  public static ArrayList<String> find(ArrayList<String> words, String startsWith, String endsWith, String contains, String notContains, String includes, String excludes) {
+  public FindWord excludes(String excludes) {
+    this.excludes = excludes;
+
+    return this;
+  }
+
+  public FindWord includes(String includes) {
+    this.includes = includes;
+
+    return this;
+  }
+
+  public FindWord contains(String contains) {
+    this.contains = contains;
+
+    return this;
+  }
+
+  public FindWord notContains(String notContains) {
+    this.notContains = notContains;
+
+    return this;
+  }
+
+  public ArrayList<String> find() {
     var outputWords = new ArrayList<String>();
 
     if (words.size() == 0) {
@@ -75,5 +85,40 @@ public class FindWord {
     }
 
     return outputWords;
+  }
+
+  public static FindWord build() {
+    return new FindWord();
+  }
+
+  public static void start(Map<Integer, ArrayList<String>> wordByLength) {
+    while(true) {
+      int wordLength = ConsoleUtility.getIntegerFromConsole("Enter the word length <0 to exit>: ");
+
+      if (wordLength == 0) {
+        break;
+      }
+
+      String startsWith = ConsoleUtility.getStringFromConsole("Starts with: ");
+      String endsWith = ConsoleUtility.getStringFromConsole("Ends with: ");
+      String contains = ConsoleUtility.getStringFromConsole("Contains substring: ");
+      String notContains = ConsoleUtility.getStringFromConsole("Doesn't contain substring: ");
+      String includes = ConsoleUtility.getStringFromConsole("Contains characters: ");
+      String excludes = ConsoleUtility.getStringFromConsole("Excludes characters: ");
+
+      var foundWords =
+          FindWord
+          .build()
+          .words(wordByLength, wordLength)
+          .contains(contains)
+          .notContains(notContains)
+          .excludes(excludes)
+          .includes(includes)
+          .startsWith(startsWith)
+          .endsWith(endsWith)
+          .find();
+
+      WordGame.printWords(foundWords);
+    }
   }
 }
